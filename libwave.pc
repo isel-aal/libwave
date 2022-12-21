@@ -1,0 +1,11 @@
+prefix=/home/ezequiel/MEGAsync/sound/wave/wavelib
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: Wave
+Description: Library for encoding, decoding and manipulating WAVE files
+Version: 1.00
+Requires: glib-2.0
+Libs: -L${libdir} -lwave
+Cflags: -I${includedir}

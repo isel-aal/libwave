@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "wavelib.h"
+#include "wave.h"
 
 #define NDEBUG
 
@@ -16,16 +16,16 @@ static int read_chunk_header(FILE *fd, ChunkHeader *chunk_header) {
 Wave *wave_create(int bits_per_sample, int channels) {
 	Wave *wave = malloc(sizeof *wave);
 	if (wave != NULL) {
-		strncpy(wave->riff_chunk.header.ChunkID, "RIFF", 4);
-		strncpy(wave->riff_chunk.Format, "WAVE", 4);
-		strncpy(wave->subchunk_fmt.header.ChunkID, "fmt ", 4);
+		memcpy(wave->riff_chunk.header.ChunkID, "RIFF", 4);
+		memcpy(wave->riff_chunk.Format, "WAVE", 4);
+		memcpy(wave->subchunk_fmt.header.ChunkID, "fmt ", 4);
 		wave->subchunk_fmt.header.ChunkSize = 16;
 		wave->subchunk_fmt.AudioFormat = 1;
 		wave->subchunk_fmt.BitsPerSample = bits_per_sample;
 		wave->subchunk_fmt.NumChannels = channels;
 		wave->subchunk_fmt.BlockAlign =
 			(wave->subchunk_fmt.BitsPerSample + 7) / 8 * wave->subchunk_fmt.NumChannels;
-		strncpy(wave->subchunk_data.header.ChunkID, "data", 4);
+		memcpy(wave->subchunk_data.header.ChunkID, "data", 4);
 		wave->samples = g_array_new(FALSE, FALSE, wave->subchunk_fmt.BlockAlign);
 	}
 	return wave;
