@@ -1,10 +1,17 @@
 Esta biblioteca proporciona um conjunto de funções para manipulação de ficheiros de audio codificados em format WAVE.
 Designadamente, interpretação e criação de ficheiros neste formato.
 
-Para gerar e instalar a biblioteca deve descarregar as fontes e executar make install.
+## Gerar
 
-A biblioteca será instalada na mesma diretoria das fontes. Ainda não é possível definir outro local de instalação.
+Para gerar a biblioteca deve descarregar as fontes e executar make.
 
-Para a utilizar pode seguir o exemplo da diretoria sample para a utikizar.
+## Instalar
 
-Para utilizar o utilitário pkg-config deve definir a variável de ambiente PKG_CONFIG_PATH com o caminho do local onde a biblioteca foi descarregada e instalada.
+A biblioteca pode ser instalada com o *script* install.sh.
+De momento este script instala a biblioteca em /usr/local. Deverá ser modificado para permitir a instalação em qualquer lugar.
+
+## Utilizar
+
+Para a utilizar pode seguir o exemplo da diretoria samples.
+
+Para utilizar o utilitário pkg-config deve definir a variável de ambiente PKG_CONFIG_PATH com o caminho do local onde se encontra o ficheiro libwave.pc.
