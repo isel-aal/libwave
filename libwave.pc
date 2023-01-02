@@ -1,4 +1,4 @@
-prefix=/home/ezequiel/MEGAsync/sound/wave/wavelib
+prefix=/usr/local
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include

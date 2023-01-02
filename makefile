@@ -1,4 +1,4 @@
-CFLAGS= `pkg-config gtk+-3.0 --cflags` -I include -g -Wall -Werror -pedantic
+CFLAGS= `pkg-config glib-2.0 --cflags` -I include -g -Wall -Werror -pedantic
 
 all: build/libwave.a build/libwave.so
 
@@ -13,10 +13,6 @@ build/libwave.so: build/wave_pic.o
 
 build/wave_pic.o: build_dir src/wave.c include/wave.h
 	gcc $(CFLAGS) -fPIC -c src/wave.c -o build/wave_pic.o
-
-install: build/libwave.a build/libwave.so
-	mkdir -p lib
-	cp build/libwave.a build/libwave.so lib
 
 build_dir:
 	mkdir -p build
