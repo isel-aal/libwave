@@ -47,7 +47,7 @@ static size_t file_write_array_char(FILE *fd, char array[], size_t nchars) {
 }
 
 void wave_format_update(Wave *wave) {
-	wave->subchunk_data.header.ChunkSize = wave->samples->len;
+	wave->subchunk_data.header.ChunkSize = wave->samples->len * g_array_get_element_size(wave->samples);
 	wave->riff_chunk.header.ChunkSize
 		= wave->subchunk_fmt.header.ChunkSize + wave->subchunk_data.header.ChunkSize;
 	wave->subchunk_fmt.ByteRate = wave->subchunk_fmt.SampleRate * wave->subchunk_fmt.BlockAlign;
