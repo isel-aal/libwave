@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <limits.h>
 
 #include "wave.h"
 
@@ -55,8 +56,10 @@ void wave_format_update(Wave *wave) {
 
 int wave_store(Wave *wave, const char *filename) {
 	FILE *fd = fopen(filename, "w");
-	if (fd == NULL)
+	if (fd == NULL) {
+		fprintf(stderr, "fopen(%s, \"w\") error: %s\n", filename, strerror(errno));
 		return 0;
+	}
 	wave->fd = fd;
 	wave_format_update(wave);
 	file_write_array_char(fd, wave->riff_chunk.header.ChunkID, 4);
@@ -83,9 +86,10 @@ int wave_store(Wave *wave, const char *filename) {
 Wave *wave_load(const char *filename) {
 	Wave *wave = NULL;
 	FILE *fd = fopen(filename, "r");
-	if (fd == NULL)
+	if (fd == NULL) {
+		fprintf(stderr, "fopen(%s, \"r\") error: %s\n", filename, strerror(errno));
 		goto exit_error0;
-
+	}
 	wave = malloc(sizeof *wave);
 	if (wave == NULL)
 		goto exit_error1;
@@ -221,6 +225,21 @@ size_t wave_get_samples(Wave *wave, size_t frame_index, char *buffer, size_t fra
 	size_t read_bytes = read_frames * wave_get_bytes_per_frame(wave);
 	memcpy(buffer, wave->samples->data + frame_index * wave_get_bytes_per_frame(wave), read_bytes);
 	return read_frames;
+}
+
+size_t wave_get_samples_by_channel(Wave *wave, int channel, size_t frame_index, char *buffer, size_t sample_count) {
+	if (channel >= wave_get_number_of_channels(wave))
+		return 0;
+	size_t read_samples = min(sample_count, wave->samples->len - frame_index);
+	size_t bytes_per_sample = wave_get_bits_per_sample(wave) / CHAR_BIT;
+	char *samples = wave->samples->data + frame_index * wave_get_bytes_per_frame(wave)
+				+ channel * bytes_per_sample;
+	for (size_t i = 0; i < read_samples; ++i) {
+		for (size_t b = 0; b < bytes_per_sample; ++b)
+				*buffer++ = *(samples + b);
+		samples += wave_get_bytes_per_frame(wave);
+	}
+	return read_samples;
 }
 
 size_t wave_read_samples(Wave *wave, char *buffer, size_t frame_count) {

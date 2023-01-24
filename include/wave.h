@@ -55,6 +55,7 @@ void wave_set_bits_per_sample(Wave *wave, int bits_per_sample);
 void wave_set_sample_rate(Wave *wave, int sample_rate);
 void wave_set_number_of_channels(Wave *wave, int number_of_channels);
 
+size_t wave_get_samples_by_channel(Wave *wave, int channel, size_t frame_index, char *buffer, size_t sample_count);
 size_t wave_get_samples(Wave *wave, size_t frame_index, char *buffer, size_t frame_count);
 size_t wave_put_samples(Wave *wave, size_t frame_index, char *buffer, size_t frame_count);
 
