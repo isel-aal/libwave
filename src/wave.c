@@ -28,6 +28,7 @@ Wave *wave_create(int bits_per_sample, int channels) {
 			(wave->subchunk_fmt.BitsPerSample + 7) / 8 * wave->subchunk_fmt.NumChannels;
 		memcpy(wave->subchunk_data.header.ChunkID, "data", 4);
 		wave->samples = g_array_new(FALSE, FALSE, wave->subchunk_fmt.BlockAlign);
+		wave->fd = NULL;
 	}
 	return wave;
 }
@@ -35,7 +36,8 @@ Wave *wave_create(int bits_per_sample, int channels) {
 void wave_destroy(Wave *wave) {
 //	g_array_free(wave->samples, TRUE);
 	g_array_unref(wave->samples);
-	fclose(wave->fd);
+	if (wave->fd != NULL)
+		fclose(wave->fd);
 	free(wave);
 }
 
@@ -60,7 +62,6 @@ int wave_store(Wave *wave, const char *filename) {
 		fprintf(stderr, "fopen(%s, \"w\") error: %s\n", filename, strerror(errno));
 		return 0;
 	}
-	wave->fd = fd;
 	wave_format_update(wave);
 	file_write_array_char(fd, wave->riff_chunk.header.ChunkID, 4);
 	file_write_int(fd, wave->riff_chunk.header.ChunkSize, 4);
@@ -79,7 +80,7 @@ int wave_store(Wave *wave, const char *filename) {
 	file_write_int(fd, wave->subchunk_data.header.ChunkSize, 4);
 	size_t wrote_frames = fwrite(wave->samples->data,
 		g_array_get_element_size(wave->samples), wave->samples->len, fd);
-	fclose(wave->fd);
+	fclose(fd);
 	return wrote_frames == wave->samples->len;
 }
 
