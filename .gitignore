@@ -3,6 +3,14 @@ docs/_build
 docs/_static
 docs/_template
 .vscode
+*.o
 *.a
 *.so
 a.out
+*.wav
+wave_record
+wave_dump
+wave_play
+wave_filter
+
+
