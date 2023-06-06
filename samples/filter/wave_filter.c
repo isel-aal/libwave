@@ -18,7 +18,6 @@ limitations under the License.
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include "wave.h"
 
 int main(int argc, char *argv[]) {
@@ -32,7 +31,7 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "Error loading file \"%s\"\n", argv[1]);
 		return -1;
 	}
-	
+
 	Wave *out_wave = wave_create(wave_get_bits_per_sample(in_wave),
 								 wave_get_number_of_channels(in_wave));
 	if (out_wave == NULL) {
@@ -41,12 +40,12 @@ int main(int argc, char *argv[]) {
 	}
 
 	wave_set_sample_rate(out_wave, wave_get_sample_rate(in_wave));
-	
+
 	const unsigned period_size = wave_get_sample_rate(in_wave) / 10;
 	int frame_size = wave_get_bytes_per_frame(in_wave);
 
 	char buffer[period_size * frame_size];
-	
+
 	size_t read_frames = wave_read_samples(in_wave, buffer, period_size);
 	while (read_frames > 0) {
 
@@ -56,9 +55,8 @@ int main(int argc, char *argv[]) {
 		read_frames = wave_read_samples(in_wave, buffer, period_size);
 	}
 	wave_format_update(out_wave);
-	
 	wave_store(out_wave, argv[2]);
-			
+
 	wave_destroy(in_wave);
 	wave_destroy(out_wave);
 }

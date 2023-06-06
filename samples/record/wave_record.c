@@ -22,7 +22,7 @@ limitations under the License.
 
 static void capture(Wave *wave, unsigned duration) {
 	snd_pcm_t *handle;
-	int result = snd_pcm_open (&handle, "default", SND_PCM_STREAM_CAPTURE, 0);
+	int result = snd_pcm_open(&handle, "default", SND_PCM_STREAM_CAPTURE, 0);
 	if (result < 0) {
 		fprintf (stderr, "cannot open audio device %s (%s)\n",
 			 "default",
@@ -90,5 +90,6 @@ int main(int argc, char *argv[]) {
 	capture(wave, duration);
 	
 	wave_store(wave, argv[1]);
+	
 	wave_destroy(wave);
 }

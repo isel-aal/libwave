@@ -113,6 +113,7 @@ Wave *wave_load(const char *filename) {
 		goto exit_error1;
 
 	wave->fd = fd;
+	wave->samples = NULL;
 
 	size_t size_riff_chunk = fread(&wave->riff_chunk, sizeof wave->riff_chunk, 1, fd);
 	if (size_riff_chunk != 1)
@@ -254,7 +255,7 @@ size_t wave_get_samples_by_channel(Wave *wave, int channel, size_t frame_index, 
 				+ channel * bytes_per_sample;
 	for (size_t i = 0; i < read_samples; ++i) {
 		for (size_t b = 0; b < bytes_per_sample; ++b)
-				*buffer++ = *(samples + b);
+			*buffer++ = *(samples + b);
 		samples += wave_get_bytes_per_frame(wave);
 	}
 	return read_samples;

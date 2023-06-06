@@ -7,6 +7,10 @@
 #include <stdlib.h>
 #include <glib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 	char ChunkID[4];
 	uint32_t ChunkSize;
@@ -68,5 +72,10 @@ size_t wave_get_size(Wave *wave);
 void wave_format_update(Wave *wave);
 
 size_t wave_get_duration(Wave *wave);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif
