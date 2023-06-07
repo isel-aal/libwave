@@ -1,14 +1,16 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-	echo "usage: $0 <install directory>"
-	exit
+if [ $# -gt 0 ]; then
+	base_dir=$1
+else
+	base_dir=/usr/local
 fi
-
-base_dir=$1
-
+echo "Installing wavelib in" $base_dir
+if [ ! -d $base_dir/include ]; then
+	mkdir -p $base_dir/include
+fi
 if [ ! -d $base_dir/lib/pkgconfig ]; then
-	mkdir $base_dir/lib/pkgconfig
+	mkdir -p $base_dir/lib/pkgconfig
 fi
 
 cp libwave.pc $base_dir/lib/pkgconfig
