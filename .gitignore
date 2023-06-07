@@ -8,9 +8,10 @@ docs/_template
 *.so
 a.out
 *.wav
-wave_record
+wave_capture
 wave_dump
 wave_play
 wave_filter
-
+wave_join
+wave_split
 
