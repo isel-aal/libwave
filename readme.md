@@ -3,7 +3,7 @@ Designadamente, interpretação e criação de ficheiros neste formato.
 
 ## Dependências
 
-A ***wavelib*** utiliza a biblioteca Glib-2.0
+Esta bibblioteca utiliza a biblioteca Glib-2.0
 ```
 $ sudo apt install libglib2.0-dev
 ```
@@ -38,7 +38,7 @@ $ export LD_LIBRARY_PATH=~/mydir/lib
 Sob a diretoria ``samples`` encontra-se um conjunto de exemplos de utilização da biblioteca.
 Estes exemplos contêm um ficheiro ``makefile`` onde se invoca o utilitário ``pkg-config``.
 
-Se a biblioteca ***wavelib*** não for instalada nas diretorias convencionais, é necessário informar o utilitário ``pkg-config`` do local de instalação do ficheiro ``libwave.pc``, através da variável de ambiente PKG_CONFIG_PATH.
+Se a biblioteca não for instalada nas diretorias convencionais, é necessário informar o utilitário ``pkg-config`` do local de instalação do ficheiro ``libwave.pc``, através da variável de ambiente ``PKG_CONFIG_PATH``.
 
 ```
 $ export PKG_CONFIG_PATH=~/mydir/lib/pkgconfig
