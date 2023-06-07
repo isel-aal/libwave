@@ -68,7 +68,7 @@ static size_t file_write_array_char(FILE *fd, char array[], size_t nchars) {
 void wave_format_update(Wave *wave) {
 	wave->subchunk_data.header.ChunkSize = wave->samples->len * g_array_get_element_size(wave->samples);
 	wave->riff_chunk.header.ChunkSize
-		= wave->subchunk_fmt.header.ChunkSize + wave->subchunk_data.header.ChunkSize;
+		= 4 + (8 + wave->subchunk_fmt.header.ChunkSize) + (8 + wave->subchunk_data.header.ChunkSize);
 	wave->subchunk_fmt.ByteRate = wave->subchunk_fmt.SampleRate * wave->subchunk_fmt.BlockAlign;
 }
 
@@ -246,7 +246,7 @@ size_t wave_get_samples(Wave *wave, size_t frame_index, char *buffer, size_t fra
 	return read_frames;
 }
 
-size_t wave_get_samples_by_channel(Wave *wave, int channel, size_t frame_index, char *buffer, size_t sample_count) {
+size_t wave_get_samples_by_channel(Wave *wave, size_t frame_index, char *buffer, size_t sample_count, int channel) {
 	if (channel >= wave_get_number_of_channels(wave))
 		return 0;
 	size_t read_samples = min(sample_count, wave->samples->len - frame_index);
@@ -267,6 +267,22 @@ size_t wave_read_samples(Wave *wave, char *buffer, size_t frame_count) {
 	memcpy(buffer, wave->samples->data + wave->current * wave_get_bytes_per_frame(wave), read_bytes);
 	wave->current += read_frames;
 	return read_frames;
+}
+
+size_t wave_read_samples_by_channel(Wave *wave, char *buffer, size_t sample_count, int channel) {
+	if (channel >= wave_get_number_of_channels(wave))
+		return 0;
+	size_t read_samples = min(sample_count, wave->samples->len - wave->current);
+	size_t bytes_per_sample = wave_get_bits_per_sample(wave) / CHAR_BIT;
+	char *samples = wave->samples->data + wave->current * wave_get_bytes_per_frame(wave)
+				+ channel * bytes_per_sample;
+	for (size_t i = 0; i < read_samples; ++i) {
+		for (size_t b = 0; b < bytes_per_sample; ++b)
+			*buffer++ = *(samples + b);
+		samples += wave_get_bytes_per_frame(wave);
+	}
+	wave->current += read_samples;
+	return read_samples;
 }
 
 void wave_set_block_align(Wave *wave, int block_align) {
