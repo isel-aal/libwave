@@ -11,4 +11,4 @@ wave_filter.o: wave_filter.c
 	gcc $(CFLAGS) -c wave_filter.c
 
 clean:
-	rm -rf *.o *.i
+	rm -rf *.o *.i wave_filter

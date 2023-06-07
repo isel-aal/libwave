@@ -11,4 +11,4 @@ wave_dump.o: wave_dump.c
 	gcc $(CFLAGS) -c wave_dump.c
 
 clean:
-	rm -rf *.o *.i
+	rm -rf *.o *.i wave_dump
