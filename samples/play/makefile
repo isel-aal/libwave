@@ -11,4 +11,4 @@ wave_play.o: wave_play.c
 	gcc $(CFLAGS) -c wave_play.c
 
 clean:
-	rm -rf *.o *.i
+	rm -rf *.o *.i wave_play
