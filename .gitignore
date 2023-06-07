@@ -14,4 +14,4 @@ wave_play
 wave_filter
 wave_join
 wave_split
-
+!waves/*.wav
